@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D99F71E-F984-481A-9D6E-85BE46510FB9}</ProjectGuid>
+    <ProjectGuid>{009EC62A-B07C-4824-BAE8-2DA44B5D37FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DevTeam</RootNamespace>
-    <AssemblyName>DevTeam</AssemblyName>
+    <RootNamespace>Developer</RootNamespace>
+    <AssemblyName>Developer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,19 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DevTeam.cs" />
-    <Compile Include="DevTeamREPO.cs" />
+    <Compile Include="Developer.cs" />
+    <Compile Include="DeveloperREPO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Developer\DeveloperClasses.csproj">
-      <Project>{009EC62A-B07C-4824-BAE8-2DA44B5D37FF}</Project>
-      <Name>DeveloperClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UserInterFace\UserInterFace.csproj">
-      <Project>{4B8FE1E6-EBAA-4509-AAA5-3DB825F95AE6}</Project>
-      <Name>UserInterFace</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
