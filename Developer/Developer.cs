@@ -8,9 +8,6 @@ namespace DeveloperClasses
 {
     public class Developer
     {
-        //Developer Name
-        //Developer ID
-        //method to identify one developer without mistake and also whether or not they have access to tool: Pluralsight
         public string DeveloperName { get; set; }
         public int DeveloperID { get; set; }
         public bool Puralsight { get; set; }
@@ -22,19 +19,5 @@ namespace DeveloperClasses
             DeveloperID = ID;
             Puralsight = puralSight;
         }
-       //public override string ToString()
-       // {
-       //     return "ID: " + DeveloperID + "   Name: " + DeveloperName;
-       // }
-        //public string GetName()
-        //{
-        //    return DeveloperName;
-        //}
-
-        //public void SetName(string name)
-        //{
-        //    DeveloperName = name;
-        //}
     }
-
 }

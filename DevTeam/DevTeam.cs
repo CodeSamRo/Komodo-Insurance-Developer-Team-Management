@@ -9,7 +9,6 @@ namespace DevTeamMethods
 {
     public class DevTeam
     {
-        //Teams need their team MEMBERS and team NAME along with team ID
         public int TeamID { get; set; }
         public List<Developer> TeamMembers{ get; set; }
         public DevTeam() { }

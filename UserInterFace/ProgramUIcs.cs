@@ -60,7 +60,8 @@ namespace UserInterFace
                 }
             }
         }
-      
+        
+        //Developer Methods
         private void DeveloperOptions()
         {
             ShowAllDevelopers();
@@ -101,6 +102,72 @@ namespace UserInterFace
                     break;
             }
         }
+        //Options
+        private void AddDeveloper()
+        {
+            Console.Clear();
+            try
+            {
+                List<Developer> listOfDevelopers = _devRepo.GetAllContents();
+                Developer developer = new Developer();
+                Console.WriteLine("Type in the Name of Developer: ");
+                developer.DeveloperName = Console.ReadLine();
+                Console.WriteLine("Type in ID of Developer: ");
+                //developer.DeveloperID = Convert.ToInt32(Console.ReadLine());
+                UniqueID(listOfDevelopers, developer);
+                //Console.WriteLine("Has Puralsight? Yes or No");
+                //HasPuralSight(developer);
+
+            }
+            catch
+            {
+                ErrorMessage();
+                AddDeveloper();
+            }
+        }
+
+        private void RemoveDeveloper()
+        {
+
+            Console.Clear();
+            Console.WriteLine("Type in ID of Developer: ");
+            int result = Convert.ToInt32(Console.ReadLine());
+            Developer developer = _devRepo.GetDeveloperByID(result);
+            _devRepo.DeleteExistingDeveloper(developer);
+        }
+
+        private void FindDeveloper()
+        {
+            Console.Clear();
+            try
+            {
+                Console.WriteLine("ID of Developer: ");
+                int result = Convert.ToInt32(Console.ReadLine());
+                Developer developer = _devRepo.GetDeveloperByID(result);
+                DisplayDeveloper(developer);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
+        }
+
+        private void FindAllFalsePuralSight()
+        {
+            Console.Clear();
+            List<Developer> listOfDevelopers = _devRepo.GetAllContents();
+            Console.WriteLine("Needs Puralsight");
+            foreach (Developer developerName in listOfDevelopers)
+            {
+                if (developerName.Puralsight == false)
+                {
+                    DisplayDeveloper(developerName);
+                }
+            }
+            Console.ReadKey();
+        }
+        //Helper Methods
         private void ShowAllDevelopers()
         {
             Console.Clear();
@@ -111,6 +178,7 @@ namespace UserInterFace
             }
             
         }
+
         private void DisplayDeveloper(Developer developer)
         {
             if (developer == null)
@@ -123,6 +191,7 @@ namespace UserInterFace
                     "HasPuralsight: {2}", developer.DeveloperID, developer.DeveloperName, developer.Puralsight);
             }
         }
+
         private void HasPuralSight(Developer developer)
         {
             string respond = Console.ReadLine();
@@ -144,29 +213,7 @@ namespace UserInterFace
                     break;
             }
         }
-        
-        private void AddDeveloper()
-        {
-            Console.Clear();
-            try
-            {
-                List<Developer> listOfDevelopers = _devRepo.GetAllContents();
-                Developer developer = new Developer();
-                Console.WriteLine("Type in the Name of Developer: ");
-                developer.DeveloperName = Console.ReadLine();
-                Console.WriteLine("Type in ID of Developer: ");
-                //developer.DeveloperID = Convert.ToInt32(Console.ReadLine());
-                UniqueID(listOfDevelopers, developer);
-                //Console.WriteLine("Has Puralsight? Yes or No");
-                //HasPuralSight(developer);
-                
-            }
-            catch
-            {
-                ErrorMessage();
-                AddDeveloper();
-            }
-        }
+
         public void UniqueID(List<Developer> developers, Developer developer)
         {
             bool test = false;
@@ -204,67 +251,8 @@ namespace UserInterFace
 
 
         }
-        private void RemoveDeveloper()
-        {
-
-            Console.Clear();
-            Console.WriteLine("Type in ID of Developer: ");
-            int result = Convert.ToInt32(Console.ReadLine());
-            Developer developer = _devRepo.GetDeveloperByID(result);
-           _devRepo.DeleteExistingDeveloper(developer);
-       }
-      
-        private void FindDeveloper()
-        {
-            Console.Clear();
-            try
-            {
-                Console.WriteLine("ID of Developer: ");
-                int result = Convert.ToInt32(Console.ReadLine());
-                Developer developer = _devRepo.GetDeveloperByID(result);
-                DisplayDeveloper(developer);
-                Console.ReadKey();
-            }
-            catch
-            {
-                ErrorMessage();
-            }
-        }
-        private void FindAllFalsePuralSight()
-        {
-            Console.Clear();
-            List<Developer> listOfDevelopers = _devRepo.GetAllContents();
-            Console.WriteLine("Needs Puralsight");
-            foreach (Developer developerName in listOfDevelopers)
-            {
-                if (developerName.Puralsight == false)
-                {
-                    DisplayDeveloper(developerName);
-                }
-            }
-            Console.ReadKey();
-        }
-        private void ShowAllTeams()
-        {
-            List<DevTeam> listOfTeams = _devTeamREPO.ShowAllTeams();
-            foreach (DevTeam team in listOfTeams)
-            {
-                DisplayDevTeams(team);
-            }
-
-        }
-        private void DisplayDevTeams(DevTeam devTeam)
-        {
-            if (devTeam == null)
-            {
-                Console.WriteLine("There is no team matching ID, try again.");
-            }
-            else
-            {
-                Console.WriteLine("Team ID: {0}           Members: {1} ", devTeam.TeamID, devTeam.TeamMembers);
-            }
-        }
-
+        
+        //DevTeam Methods
         private void TeamOptions()
         {
             Console.Clear();
@@ -302,6 +290,7 @@ namespace UserInterFace
                     break;
             }
         }
+        //Options
         private void CreateTeamPropt()
         {
             Console.Clear();
@@ -313,6 +302,48 @@ namespace UserInterFace
             UniqueTeamID(devTeams ,devTeam);
             
         }
+
+        private void AddDeveloperToTeamPropt()
+        {
+            Console.WriteLine("Please type the ID of the team you want to ADD to.");
+            FindDevTeam();
+            Console.WriteLine("Type the ID's of the developers you want to add to the team.");
+            try
+            { 
+                int result = Convert.ToInt32(Console.ReadLine());
+                Developer developer = _devRepo.GetDeveloperByID(result);
+                _devTeamREPO.AddDeveloperToTeam(result);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
+        }
+
+        private void RemoveDeveloperFromTeamPropt()
+        {
+
+        }
+        //Helper Methods
+        private void FindDevTeam()
+        {
+            Console.Clear();
+            try
+            {
+                Console.WriteLine("ID of Team: ");
+                int result = Convert.ToInt32(Console.ReadLine());
+                DevTeam devTeam = _devTeamREPO.GetDevTeamByID(result);
+                Console.Clear();
+                DisplayDevTeams(devTeam);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
+        }
+
         public void UniqueTeamID(List<DevTeam> listOfDevTeams, DevTeam devTeam)
         {
             bool test = false;
@@ -328,7 +359,7 @@ namespace UserInterFace
                         test = true;
                     }
             }
-            catch 
+            catch
             {
                 testSecond = true;
             }
@@ -355,49 +386,37 @@ namespace UserInterFace
                 }
             }
         }
-        private void FindDevTeam()
+
+        private void ShowAllTeams()
         {
-            Console.Clear();
-            try
+            List<DevTeam> listOfTeams = _devTeamREPO.ShowAllTeams();
+            foreach (DevTeam team in listOfTeams)
             {
-                Console.WriteLine("ID of Team: ");
-                int result = Convert.ToInt32(Console.ReadLine());
-                DevTeam devTeam = _devTeamREPO.GetDevTeamByID(result);
-                Console.Clear();
-                DisplayDevTeams(devTeam);
-                Console.ReadKey();
+                DisplayDevTeams(team);
             }
-            catch
-            {
-                ErrorMessage();
-            }
-        }
-        private void AddDeveloperToTeamPropt()
-        {
-            Console.WriteLine("Please type the ID of the team you want to ADD to.");
-            FindDevTeam();
-            Console.WriteLine("Type the ID's of the developers you want to add to the team.");
-            try
-            { 
-                int result = Convert.ToInt32(Console.ReadLine());
-                Developer developer = _devRepo.GetDeveloperByID(result);
-                _devTeamREPO.AddDeveloperToTeam(result);
-                Console.ReadKey();
-            }
-            catch
-            {
-                ErrorMessage();
-            }
-        }
-        private void RemoveDeveloperFromTeamPropt()
-        {
 
         }
+
+        private void DisplayDevTeams(DevTeam devTeam)
+        {
+            if (devTeam == null)
+            {
+                Console.WriteLine("There is no team matching ID, try again.");
+            }
+            else
+            {
+                Console.WriteLine("Team ID: {0}           Members: {1} ", devTeam.TeamID, devTeam.TeamMembers);
+            }
+        }
+
+
+        //Line Saver Methods
         private void DashSpacer()
         {
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------" +
                 "------------------------------------------------------------------------------------------------------------------------");
         }
+
         private void ErrorMessage()
         {
             Console.WriteLine("Please enter in a valid input \n" +

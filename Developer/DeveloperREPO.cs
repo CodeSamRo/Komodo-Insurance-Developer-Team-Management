@@ -8,16 +8,7 @@ namespace DeveloperClasses
 {
     public class DeveloperREPO
     {
-        //CRUD
-        //method to identify one developer without mistake and also whether or not they have access to tool: Pluralsight
-        //Add member to team by unique identifier
-        //Delete member from team by unique identifier
-        //_DevRepo.Add(new Developer(Console.ReadLine(),Convert.ToInt32(Console.ReadLine()), false));
-
         List<Developer> _DevRepo = new List<Developer>();
-        
-       
-        
         public Developer GetDeveloperByID(int ID)
         {
             foreach(Developer developer in _DevRepo)
