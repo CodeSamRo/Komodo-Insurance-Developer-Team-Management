@@ -1,4 +1,5 @@
 ﻿using DeveloperClasses;
+using DevTeamMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace UserInterFace
     public class ProgramUIcs
     {
         DeveloperREPO _devRepo = new DeveloperREPO();
-
+        DevTeamREPO _devTeamREPO = new DevTeamREPO();
         public void Run()
         {
             RunMenu();
@@ -28,7 +29,7 @@ namespace UserInterFace
                 "Enter the number of the option you would like to select. \n" +
                 "------------------------------------------------------------------------------------------------------------------------\n" +
                 "1. Developers and options \n" +
-                "2. Find Developer content by Name, and ID \n" +
+                "2. Find Developer by ID \n" +
                 "3. Show Teams and Options \n" +
                 "4. Exit") ;
                 DashSpacer();
@@ -59,6 +60,7 @@ namespace UserInterFace
                 }
             }
         }
+      
         private void DeveloperOptions()
         {
             ShowAllDevelopers();
@@ -69,7 +71,8 @@ namespace UserInterFace
                 "1. Add Developer\n" +
                 "2. Remove Developer\n" +
                 "3. Find Developer\n" +
-                "4. Exit");
+                "4. List by PuralSight\n" +
+                "5. Back");
             DashSpacer();
             string userInput = Console.ReadLine();
             switch (userInput)
@@ -87,12 +90,13 @@ namespace UserInterFace
                     FindDeveloper();
                     break;
                 case "4":
+                    FindAllFalsePuralSight();
+                    break;
+                case "5":
                     RunMenu();
                     break;
                 default:
-                    Console.WriteLine("Please enter in a valid number between 1 and 3. " +
-                           "Press any key to continue...");
-                    Console.ReadKey();
+                    ErrorMessage();
                     DeveloperOptions();
                     break;
             }
@@ -101,31 +105,105 @@ namespace UserInterFace
         {
             Console.Clear();
             List<Developer> listOfDevelopers = _devRepo.GetAllContents();
-            
-            foreach (Developer developer in listOfDevelopers)
+            foreach (Developer developerName in listOfDevelopers)
             {
-                    DisplayDeveloper(developer);   
+                DisplayDeveloper(developerName);
             }
             
         }
         private void DisplayDeveloper(Developer developer)
         {
-            Console.WriteLine("ID: {0}   Name: {1}   HasPuralsight: {2}", developer.DeveloperID, developer.DeveloperName, developer.Puralsight);
+            if (developer == null)
+            {
+                Console.WriteLine("There is no person matching ID, try again.");
+            }
+            else
+            {
+                Console.WriteLine("ID: {0}               Name: {1}                              " +
+                    "HasPuralsight: {2}", developer.DeveloperID, developer.DeveloperName, developer.Puralsight);
+            }
         }
-        //Add member to team by unique identifier
+        private void HasPuralSight(Developer developer)
+        {
+            string respond = Console.ReadLine();
+            switch (respond.ToLower())
+            {
+                case "no":
+                    developer.Puralsight = false;
+                    _devRepo.AddDeveloperToDirectory(developer);
+                    break;
+                case "yes":
+                    developer.Puralsight = true;
+                    _devRepo.AddDeveloperToDirectory(developer);
+                    break;
+                default:
+                    _devRepo.DeleteExistingDeveloper(developer);
+                    Console.WriteLine("Please type Yes or No");
+                    Console.ReadKey();
+                    AddDeveloper();
+                    break;
+            }
+        }
+        
         private void AddDeveloper()
         {
             Console.Clear();
-            Developer developer = new Developer();
-            Console.WriteLine("Type in the Name of Developer: ");
-            developer.DeveloperName = Console.ReadLine();
-            Console.WriteLine("Type in ID of Developer: ");
-            developer.DeveloperID = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Has Puralsight? Yes or No");
-            _devRepo.HasPuralSight(developer);
-            _devRepo.AddDeveloperToDirectory(developer);
-        } 
+            try
+            {
+                List<Developer> listOfDevelopers = _devRepo.GetAllContents();
+                Developer developer = new Developer();
+                Console.WriteLine("Type in the Name of Developer: ");
+                developer.DeveloperName = Console.ReadLine();
+                Console.WriteLine("Type in ID of Developer: ");
+                //developer.DeveloperID = Convert.ToInt32(Console.ReadLine());
+                UniqueID(listOfDevelopers, developer);
+                //Console.WriteLine("Has Puralsight? Yes or No");
+                //HasPuralSight(developer);
+                
+            }
+            catch
+            {
+                ErrorMessage();
+                AddDeveloper();
+            }
+        }
+        public void UniqueID(List<Developer> developers, Developer developer)
+        {
+            bool test = false;
+            int ID = Convert.ToInt32(Console.ReadLine());
+            try
+            {
+                foreach (Developer developer1 in developers)
+                    
+                    if (ID == developer1.DeveloperID)
+                    {
+                        test = true;
+                    }
+            }
+            catch
+            {
+                ErrorMessage();
+            }
+            finally
+            {
+                if (test == true)
+                {
+                    Console.WriteLine("ID Already exists.");
+                    _devRepo.DeleteExistingDeveloper(developer);
+                    Console.ReadKey();
+                }
+                else
+                {
+                    developer.DeveloperID = ID;
+                    Console.WriteLine("Has Puralsight? Yes or No");
+                    HasPuralSight(developer);
+                }
 
+            }
+                
+
+
+        }
         private void RemoveDeveloper()
         {
 
@@ -135,39 +213,58 @@ namespace UserInterFace
             Developer developer = _devRepo.GetDeveloperByID(result);
            _devRepo.DeleteExistingDeveloper(developer);
        }
-        //private void FindDeveloper()
-        //{
-            
-        //    Console.Clear();
-        //    Console.WriteLine("What is the name?");
-        //    string nameResult = Console.ReadLine();
-        //    if (DeveloperREPO.Equals(nameResult, content.DeveloperName))
-        //    {
-        //        DisplayContent(content);
-        //    }
-            
-            
-        //    Console.WriteLine("What is the ID");
-        //    string idResult = Console.ReadLine();
-        //    if (DeveloperREPO.Equals(idResult, content.DeveloperID))
-        //    {
-        //        DisplayContent(content);
-        //    } 
-        //    Console.ReadKey();
-        //}
+      
         private void FindDeveloper()
         {
             Console.Clear();
-            Console.WriteLine("ID of Developer: ");
-            int result = Convert.ToInt32(Console.ReadLine());
-            Developer developer = _devRepo.GetDeveloperByID(result);
-            DisplayDeveloper(developer);
+            try
+            {
+                Console.WriteLine("ID of Developer: ");
+                int result = Convert.ToInt32(Console.ReadLine());
+                Developer developer = _devRepo.GetDeveloperByID(result);
+                DisplayDeveloper(developer);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
+        }
+        private void FindAllFalsePuralSight()
+        {
+            Console.Clear();
+            List<Developer> listOfDevelopers = _devRepo.GetAllContents();
+            Console.WriteLine("Needs Puralsight");
+            foreach (Developer developerName in listOfDevelopers)
+            {
+                if (developerName.Puralsight == false)
+                {
+                    DisplayDeveloper(developerName);
+                }
+            }
             Console.ReadKey();
         }
         private void ShowAllTeams()
         {
+            List<DevTeam> listOfTeams = _devTeamREPO.ShowAllTeams();
+            foreach (DevTeam team in listOfTeams)
+            {
+                DisplayDevTeams(team);
+            }
 
         }
+        private void DisplayDevTeams(DevTeam devTeam)
+        {
+            if (devTeam == null)
+            {
+                Console.WriteLine("There is no team matching ID, try again.");
+            }
+            else
+            {
+                Console.WriteLine("Team ID: {0}           Members: {1} ", devTeam.TeamID, devTeam.TeamMembers);
+            }
+        }
+
         private void TeamOptions()
         {
             Console.Clear();
@@ -200,20 +297,97 @@ namespace UserInterFace
                     RunMenu();
                     break;
                 default:
-                    Console.WriteLine("Please enter in a valid number between 1 and 3. " +
-                           "Press any key to continue...");
-                    Console.ReadKey();
+                    ErrorMessage();
                     TeamOptions();
                     break;
             }
         }
         private void CreateTeamPropt()
         {
+            Console.Clear();
+            DevTeam devTeam = new DevTeam();
+            List<DevTeam> devTeams = _devTeamREPO.ShowAllTeams();
+            Console.WriteLine("What would you like the team ID to be.");
+            //devTeam.TeamID = Convert.ToInt32(Console.ReadLine());
 
+            UniqueTeamID(devTeams ,devTeam);
+            
+        }
+        public void UniqueTeamID(List<DevTeam> listOfDevTeams, DevTeam devTeam)
+        {
+            bool test = false;
+            bool testSecond = false;
+            int teamID = 0;
+            try
+            {
+                teamID = Convert.ToInt32(Console.ReadLine());
+                foreach (DevTeam devTeam1 in listOfDevTeams)
+
+                    if (teamID == devTeam1.TeamID)
+                    {
+                        test = true;
+                    }
+            }
+            catch 
+            {
+                testSecond = true;
+            }
+            finally
+            {
+                if (testSecond == true)
+                {
+                    _devTeamREPO.DeleteExistingDevTeam(devTeam);
+                    ErrorMessage();
+                }
+                else
+                {
+                    if (test == true)
+                    {
+                        _devTeamREPO.DeleteExistingDevTeam(devTeam);
+                        Console.WriteLine("TeamID Already exists.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        devTeam.TeamID = teamID;
+                        _devTeamREPO.CreateTeam(devTeam);
+                    }
+                }
+            }
+        }
+        private void FindDevTeam()
+        {
+            Console.Clear();
+            try
+            {
+                Console.WriteLine("ID of Team: ");
+                int result = Convert.ToInt32(Console.ReadLine());
+                DevTeam devTeam = _devTeamREPO.GetDevTeamByID(result);
+                Console.Clear();
+                DisplayDevTeams(devTeam);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
         }
         private void AddDeveloperToTeamPropt()
         {
-
+            Console.WriteLine("Please type the ID of the team you want to ADD to.");
+            FindDevTeam();
+            Console.WriteLine("Type the ID's of the developers you want to add to the team.");
+            try
+            { 
+                int result = Convert.ToInt32(Console.ReadLine());
+                Developer developer = _devRepo.GetDeveloperByID(result);
+                _devTeamREPO.AddDeveloperToTeam(result);
+                Console.ReadKey();
+            }
+            catch
+            {
+                ErrorMessage();
+            }
         }
         private void RemoveDeveloperFromTeamPropt()
         {
@@ -223,6 +397,12 @@ namespace UserInterFace
         {
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------" +
                 "------------------------------------------------------------------------------------------------------------------------");
+        }
+        private void ErrorMessage()
+        {
+            Console.WriteLine("Please enter in a valid input \n" +
+                           "Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }

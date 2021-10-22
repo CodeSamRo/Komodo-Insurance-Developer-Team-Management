@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTeam", "DevTeam\DevTeam.csproj", "{4D99F71E-F984-481A-9D6E-85BE46510FB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTeamMethods", "DevTeam\DevTeamMethods.csproj", "{4D99F71E-F984-481A-9D6E-85BE46510FB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperClasses", "Developer\DeveloperClasses.csproj", "{009EC62A-B07C-4824-BAE8-2DA44B5D37FF}"
 EndProject

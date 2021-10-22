@@ -50,10 +50,6 @@
       <Project>{009EC62A-B07C-4824-BAE8-2DA44B5D37FF}</Project>
       <Name>DeveloperClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UserInterFace\UserInterFace.csproj">
-      <Project>{4B8FE1E6-EBAA-4509-AAA5-3DB825F95AE6}</Project>
-      <Name>UserInterFace</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

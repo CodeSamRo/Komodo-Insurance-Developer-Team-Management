@@ -41,7 +41,7 @@ namespace DeveloperClasses
             return _DevRepo;
         }
 
-        public Developer GetContentByName(string name)
+        public Developer GetContentByDeveloper(string name)
         {
             foreach (Developer developer in _DevRepo)
             {
@@ -54,8 +54,8 @@ namespace DeveloperClasses
         }
 
         public bool UpdateExistingContent(string originalDeveloper, Developer newDeveloper)
-        {
-            Developer oldDeveloper = GetContentByName(originalDeveloper);
+        { 
+            Developer oldDeveloper = GetContentByDeveloper(originalDeveloper);
             if (oldDeveloper != null)
             {
                 oldDeveloper.DeveloperName = newDeveloper.DeveloperName;
@@ -73,28 +73,6 @@ namespace DeveloperClasses
 
             _DevRepo.Remove(existingDeveloper);
         }
-        public void HasPuralSight(Developer developer)
-        {
-            string respond = Console.ReadLine();
-            switch (respond.ToLower())
-            {
-                case "no":
-                    developer.Puralsight = false;
-                    break;
-                case "yes":
-                    developer.Puralsight = true;
-                    break;
-                default:
-                    Console.WriteLine("Please type Yes or No");
-                    Console.ReadKey();
-                    break;
-            }
-        }
-        //public string ShowList()
-        //{
-
-        //    return _DevRepo.ToString;
-        //}
 
 
     }

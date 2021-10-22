@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevTeam
+namespace DevTeamMethods
 {
     public class DevTeam
     {
         //Teams need their team MEMBERS and team NAME along with team ID
-        public string TeamName { get; set; }
+        public int TeamID { get; set; }
         public List<Developer> TeamMembers{ get; set; }
         public DevTeam() { }
-        public DevTeam(string teamName, List<Developer> teamMembers)
+        public DevTeam(int teamID, List<Developer> teamMembers)
         {
-            TeamName = teamName;
+            TeamID = teamID;
             TeamMembers = teamMembers;
         }
     }
